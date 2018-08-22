@@ -1,0 +1,37 @@
+{if $pager.last > 1}
+<nav>
+	<ul class="pagination">
+		<li>
+			<a href="javascript:;" data-item-page="1" aria-label="První">
+				<span aria-hidden="true">&laquo;</span>
+			</a>
+		</li>
+		<li>
+			<a href="javascript:;" data-item-page="{$pager.previous}" aria-label="Předchozí">
+				<span aria-hidden="true">&lt;</span>
+			</a>
+		</li>
+{foreach from=$pager.pages item=number}
+	{if ($number <= $pager.page + 3 && $number >= $pager.page - 3) || $number == 1 || $number == $pager.last}
+		<li{if $pager.page == $number} class="active"{/if}><a href="javascript:;" data-item-page="{$number}">{$number}</a></li>
+		{if $number == 1 && $pager.page > 5}
+		<li><a href="javascript:;">&hellip;</a></li>
+		{/if}
+	{elseif $number == $pager.last - 1 && $pager.page < $pager.last - 4}
+		<li><a href="javascript:;">&hellip;</a></li>
+	{/if}
+{/foreach}
+		<li>
+			<a href="javascript:;" data-item-page="{$pager.next}" aria-label="Další">
+				<span aria-hidden="true">&gt;</span>
+			</a>
+		</li>
+		<li>
+			<a href="javascript:;" data-item-page="{$pager.last}" aria-label="Poslední">
+				<span aria-hidden="true">&raquo;</span>
+			</a>
+		</li>
+	</ul>
+</nav>
+{/if}
+

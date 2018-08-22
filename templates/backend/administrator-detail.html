@@ -1,0 +1,63 @@
+<h1>{if $user_id}Administrátor: {$data.fname} {$data.lname}{else}Nový záznam{/if}</h1>
+<form class="form-horizontal" method="post" action="" enctype="multipart/form-data">
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="username">Uživatelské jméno <span class="required-star"></span></label>
+		<div class="col-sm-10">
+			<input type="text" required name="username" class="form-control" id="username" placeholder="Uživatelské jméno" value="{$data.username}">
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="passwd">Heslo{if !$user_id} *{/if}</label>
+		<div class="col-sm-10">
+			<input type="password"{if !$user_id} required{/if} name="passwd" class="form-control" id="passwd" placeholder="{if $user_id}Minimálně 8 znaků, vyplňujte pouze, pokud chcete heslo změnit{else}Heslo, minimálně 8 znaků{/if}">
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="repasswd">Heslo znovu{if !$user_id} *{/if}</label>
+		<div class="col-sm-10">
+			<input type="password"{if !$user_id} required{/if} name="repasswd" class="form-control" id="repasswd" placeholder="{if $user_id}Minimálně 8 znaků, vyplňujte pouze, pokud chcete heslo změnit{else}Heslo, minimálně 8 znaků{/if}">
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="fname">Jméno <span class="required-star"></span></label>
+		<div class="col-sm-10">
+			<input type="text" required name="fname" class="form-control" id="fname" placeholder="Jméno" value="{$data.fname}">
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="lname">Příjmení <span class="required-star"></span></label>
+		<div class="col-sm-10">
+			<input type="text" required name="lname" class="form-control" id="lname" placeholder="Příjmení" value="{$data.lname}">
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="email">E-mail</label>
+		<div class="col-sm-10">
+			<input type="text" name="email" class="form-control" id="email" placeholder="E-mail" value="{$data.email}">
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="phone">Telefon</label>
+		<div class="col-sm-10">
+			<input type="text" name="phone" class="form-control" id="phone" placeholder="Telefon" value="{$data.phone}">
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="status">Status</label>
+		<div class="col-sm-10">
+			<select name="status" id="status" class="form-control">
+{if $data.user_id != $USER_ID}
+				<option value="N"{if $data.status == 'N'} selected="selected"{/if}>Neaktivní</option>
+{/if}
+				<option value="Y"{if $data.status == 'Y'} selected="selected"{/if}>Aktivní</option>
+				<option value="Y"{if $data.status == 'W'} selected="selected"{/if}>Čekající na ověření</option>
+			</select>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-offset-2 col-sm-10">
+			<button type="submit" name="save" class="btn btn-primary">Uložit a zpět</button>
+			<a href="{$ROOT}admin/administrator" class="btn btn-default">Zpět bez uložení</a>
+		</div>
+	</div>
+</form>

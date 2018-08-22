@@ -1,0 +1,79 @@
+<h1>Administrátoři ({$count})</h1>
+<p>
+	<a href="{$ROOT}admin/administrator-detail" class="btn btn-default">Nový záznam</a>
+{if $filter}
+	<a href="?nofilter" class="btn btn-danger">Zrušit filter</a>
+{/if}
+</p>
+{include file="pager.html"}
+<form method="post" action="">
+	<table class="table table-bordered table-hover table-striped">
+		<thead>
+			<tr>
+				<th><a href="{$ROOT}admin/administrator?order=u1.username">Uživatelské jméno{if $ORDER.order == 'u1.username'} <span class="glyphicon glyphicon-sort-by-alphabet{if $ORDER.sort == 'DESC'}-alt{/if}"></span>{/if}</a></th>
+				<th><a href="{$ROOT}admin/administrator?order=u1.fname">Jméno{if $ORDER.order == 'u1.fname'} <span class="glyphicon glyphicon-sort-by-alphabet{if $ORDER.sort == 'DESC'}-alt{/if}"></span>{/if}</a></th>
+				<th><a href="{$ROOT}admin/administrator?order=u1.lname">Příjmení{if $ORDER.order == 'u1.lname'} <span class="glyphicon glyphicon-sort-by-alphabet{if $ORDER.sort == 'DESC'}-alt{/if}"></span>{/if}</a></th>
+				<th><a href="{$ROOT}admin/administrator?order=u1.status">Stav{if $ORDER.order == 'u1.status'} <span class="glyphicon glyphicon-sort-by-alphabet{if $ORDER.sort == 'DESC'}-alt{/if}"></span>{/if}</a></th>
+				<th><a href="{$ROOT}admin/administrator?order=u1.inserted">Vloženo{if $ORDER.order == 'u1.inserted'} <span class="glyphicon glyphicon-sort-by-alphabet{if $ORDER.sort == 'DESC'}-alt{/if}"></span>{/if}</a></th>
+				<th>Akce</th>
+			</tr>
+			<tr class="filter">
+				<th>
+					<input type="hidden" name="filter" value="1">
+					<input type="text" placeholder="hledej" name="username" value="{$filter.username}">
+				</th>
+				<th><input type="text" placeholder="hledej" name="fname" value="{$filter.fname}"></th>
+				<th><input type="text" placeholder="hledej" name="lname" value="{$filter.lname}"></th>
+				<th>
+					<select name="status">
+						<option value="0">Všichni</option>
+						<option value="Y"{if $filter.status == 'Y'} selected="selected"{/if}>Pouze aktivní</option>
+						<option value="N"{if $filter.status == 'N'} selected="selected"{/if}>Pouze neaktivní</option>
+						<option value="W"{if $filter.status == 'W'} selected="selected"{/if}>Pouze čekající</option>
+					</select>
+				</th>
+				<th>
+					<input type="text" class="half datepicker-nofuture" placeholder="od" name="inserted_from" value="{$filter.inserted_from}">
+					<input type="text" class="half datepicker-nofuture" placeholder="do" name="inserted_to" value="{$filter.inserted_to}">
+				</th>
+				<th>&nbsp;</th>
+			</tr>	
+		</thead>
+		<tbody>
+{foreach from=$users item=row}
+			<tr>
+				<td>{$row.username}</td>
+				<td>{$row.fname}</td>
+				<td>{$row.lname}</td>
+				<td>{if $row.status == 'Y'}aktivní{elseif $row.status == 'N'}neaktivní{elseif $row.status == 'W'}čekající na ověření{/if}</td>
+				<td>{$row.inserted|date_format:"%d.%m.%Y %H:%M"}</td>
+				<td>
+					<a href="{$ROOT}admin/administrator-detail?id={$row.user_id}" class="btn btn-primary btn-xs">Upravit</a>
+	{if $row.user_id != $USER_ID && false}
+					<a href="javascript:;" data-href="{$ROOT}admin/administrator?delete={$row.user_id}" class="btn btn-danger btn-xs delete" data-toggle="modal" data-target="#deleteItemModal">Smazat</a>
+	{/if}
+				</td>
+			</tr>
+{/foreach}
+		</tbody>
+	</table>
+</form>
+{include file="pager.html"}
+<!-- Modal -->
+<div class="modal fade" id="deleteItemModal" tabindex="-1" role="dialog" aria-labelledby="deleteItemLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="deleteItemLabel">Smazat položku</h4>
+			</div>
+			<div class="modal-body">
+				<p>Opravdu chcete smazat položku?</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Zrušit</button>
+				<a href="" class="btn btn-primary">Potvrdit</a>
+			</div>
+		</div>
+	</div>
+</div>

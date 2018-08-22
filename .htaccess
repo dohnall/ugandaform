@@ -1,0 +1,11 @@
+RewriteEngine on
+
+#RewriteCond %{HTTP_HOST} ^ugandaform.loc
+#RewriteRule (.*) http://www.ugandaform.loc/$1 [R=301,L]
+
+RewriteRule ^sitemap.xml$ /index.php?path=sitemap [L,QSA]
+
+RewriteCond %{REQUEST_URI} (\.[a-zA-Z]+)$
+RewriteRule ^(.*)$ - [L]
+
+RewriteRule ^(.+)\/?$ /index.php?path=$1 [L,QSA]

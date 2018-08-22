@@ -1,0 +1,51 @@
+<nav>
+{if $pager.last > 1}
+	<ul class="pagination pull-left">
+		<li>
+			<a href="?p=1" aria-label="První">
+				<span aria-hidden="true">&laquo;</span>
+			</a>
+		</li>
+		<li>
+			<a href="?p={$pager.previous}" aria-label="Předchozí">
+				<span aria-hidden="true">&lt;</span>
+			</a>
+		</li>
+	{foreach from=$pager.pages item=number}
+		{if ($number <= $pager.page + 3 && $number >= $pager.page - 3) || $number == 1 || $number == $pager.last}
+		<li{if $pager.page == $number} class="active"{/if}><a href="?p={$number}">{$number}</a></li>
+			{if $number == 1 && $pager.page > 5}
+		<li><a href="javascript:;">&hellip;</a></li>
+			{/if}
+		{elseif $number == $pager.last - 1 && $pager.page < $pager.last - 4}
+		<li><a href="javascript:;">&hellip;</a></li>
+		{/if}
+	{/foreach}
+		<li>
+			<a href="?p={$pager.next}" aria-label="Další">
+				<span aria-hidden="true">&gt;</span>
+			</a>
+		</li>
+		<li>
+			<a href="?p={$pager.last}" aria-label="Poslední">
+				<span aria-hidden="true">&raquo;</span>
+			</a>
+		</li>
+	</ul>
+{/if}
+{if in_array($PAGE, array('contracts', 'current-campaigns', 'clients', 'intervention', 'storno'))}
+	<form method="post" action="" class="form-inline form-perpage">
+	  	<div class="form-group">
+	    	<label for="perpage">Počet záznamů na stránku:</label>
+			<select id="perpage" name="perpage" class="form-control">
+				<option value="20"{if $perpage == 20} selected{/if}>20</option>
+				<option value="50"{if $perpage == 50} selected{/if}>50</option>
+				<option value="100"{if $perpage == 100} selected{/if}>100</option>
+				<option value="250"{if $perpage == 250} selected{/if}>250</option>
+				<option value="500"{if $perpage == 500} selected{/if}>500</option>
+				<option value="1000"{if $perpage == 1000} selected{/if}>1000</option>
+			</select>
+		</div>
+	</form>
+{/if}
+</nav>
