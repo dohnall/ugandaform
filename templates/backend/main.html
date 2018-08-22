@@ -58,8 +58,8 @@
 			<div id="navbar" class="navbar-collapse collapse">
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="{$ROOT}admin">Dashboard</a></li>
-					<li><a href="{$ROOT}admin/administrator-detail?id={$USER.user_id}">Profil</a></li>
-					<li><a href="{$ROOT}admin/logout">Odhlášení ({$USER.username})</a></li>
+					<li><a href="{$ROOT}admin/{if $USER.admin == 'Y'}administrator{else}user{/if}-detail?id={$USER.user_id}">Profile</a></li>
+					<li><a href="{$ROOT}admin/logout">Logout ({$USER.username})</a></li>
 				</ul>
 			</div>
 		</div>

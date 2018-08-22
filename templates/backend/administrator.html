@@ -1,8 +1,8 @@
-<h1>Administrátoři ({$count})</h1>
+<h1>Administrators ({$count})</h1>
 <p>
-	<a href="{$ROOT}admin/administrator-detail" class="btn btn-default">Nový záznam</a>
+	<a href="{$ROOT}admin/administrator-detail" class="btn btn-default">New record</a>
 {if $filter}
-	<a href="?nofilter" class="btn btn-danger">Zrušit filter</a>
+	<a href="?nofilter" class="btn btn-danger">Cancel filter</a>
 {/if}
 </p>
 {include file="pager.html"}
@@ -10,31 +10,31 @@
 	<table class="table table-bordered table-hover table-striped">
 		<thead>
 			<tr>
-				<th><a href="{$ROOT}admin/administrator?order=u1.username">Uživatelské jméno{if $ORDER.order == 'u1.username'} <span class="glyphicon glyphicon-sort-by-alphabet{if $ORDER.sort == 'DESC'}-alt{/if}"></span>{/if}</a></th>
-				<th><a href="{$ROOT}admin/administrator?order=u1.fname">Jméno{if $ORDER.order == 'u1.fname'} <span class="glyphicon glyphicon-sort-by-alphabet{if $ORDER.sort == 'DESC'}-alt{/if}"></span>{/if}</a></th>
-				<th><a href="{$ROOT}admin/administrator?order=u1.lname">Příjmení{if $ORDER.order == 'u1.lname'} <span class="glyphicon glyphicon-sort-by-alphabet{if $ORDER.sort == 'DESC'}-alt{/if}"></span>{/if}</a></th>
-				<th><a href="{$ROOT}admin/administrator?order=u1.status">Stav{if $ORDER.order == 'u1.status'} <span class="glyphicon glyphicon-sort-by-alphabet{if $ORDER.sort == 'DESC'}-alt{/if}"></span>{/if}</a></th>
-				<th><a href="{$ROOT}admin/administrator?order=u1.inserted">Vloženo{if $ORDER.order == 'u1.inserted'} <span class="glyphicon glyphicon-sort-by-alphabet{if $ORDER.sort == 'DESC'}-alt{/if}"></span>{/if}</a></th>
-				<th>Akce</th>
+				<th><a href="{$ROOT}admin/administrator?order=u1.username">Username{if $ORDER.order == 'u1.username'} <span class="glyphicon glyphicon-sort-by-alphabet{if $ORDER.sort == 'DESC'}-alt{/if}"></span>{/if}</a></th>
+				<th><a href="{$ROOT}admin/administrator?order=u1.fname">First name{if $ORDER.order == 'u1.fname'} <span class="glyphicon glyphicon-sort-by-alphabet{if $ORDER.sort == 'DESC'}-alt{/if}"></span>{/if}</a></th>
+				<th><a href="{$ROOT}admin/administrator?order=u1.lname">Last name{if $ORDER.order == 'u1.lname'} <span class="glyphicon glyphicon-sort-by-alphabet{if $ORDER.sort == 'DESC'}-alt{/if}"></span>{/if}</a></th>
+				<th><a href="{$ROOT}admin/administrator?order=u1.status">Status{if $ORDER.order == 'u1.status'} <span class="glyphicon glyphicon-sort-by-alphabet{if $ORDER.sort == 'DESC'}-alt{/if}"></span>{/if}</a></th>
+				<th><a href="{$ROOT}admin/administrator?order=u1.inserted">Inserted{if $ORDER.order == 'u1.inserted'} <span class="glyphicon glyphicon-sort-by-alphabet{if $ORDER.sort == 'DESC'}-alt{/if}"></span>{/if}</a></th>
+				<th>Action</th>
 			</tr>
 			<tr class="filter">
 				<th>
 					<input type="hidden" name="filter" value="1">
-					<input type="text" placeholder="hledej" name="username" value="{$filter.username}">
+					<input type="text" placeholder="search" name="username" value="{$filter.username}">
 				</th>
-				<th><input type="text" placeholder="hledej" name="fname" value="{$filter.fname}"></th>
-				<th><input type="text" placeholder="hledej" name="lname" value="{$filter.lname}"></th>
+				<th><input type="text" placeholder="search" name="fname" value="{$filter.fname}"></th>
+				<th><input type="text" placeholder="search" name="lname" value="{$filter.lname}"></th>
 				<th>
 					<select name="status">
-						<option value="0">Všichni</option>
-						<option value="Y"{if $filter.status == 'Y'} selected="selected"{/if}>Pouze aktivní</option>
-						<option value="N"{if $filter.status == 'N'} selected="selected"{/if}>Pouze neaktivní</option>
-						<option value="W"{if $filter.status == 'W'} selected="selected"{/if}>Pouze čekající</option>
+						<option value="0">All</option>
+						<option value="Y"{if $filter.status == 'Y'} selected="selected"{/if}>Active only</option>
+						<option value="N"{if $filter.status == 'N'} selected="selected"{/if}>Inactive only</option>
+						<option value="W"{if $filter.status == 'W'} selected="selected"{/if}>Waiting approval only</option>
 					</select>
 				</th>
 				<th>
-					<input type="text" class="half datepicker-nofuture" placeholder="od" name="inserted_from" value="{$filter.inserted_from}">
-					<input type="text" class="half datepicker-nofuture" placeholder="do" name="inserted_to" value="{$filter.inserted_to}">
+					<input type="text" class="half datepicker-nofuture" placeholder="from" name="inserted_from" value="{$filter.inserted_from}">
+					<input type="text" class="half datepicker-nofuture" placeholder="to" name="inserted_to" value="{$filter.inserted_to}">
 				</th>
 				<th>&nbsp;</th>
 			</tr>	
@@ -45,12 +45,12 @@
 				<td>{$row.username}</td>
 				<td>{$row.fname}</td>
 				<td>{$row.lname}</td>
-				<td>{if $row.status == 'Y'}aktivní{elseif $row.status == 'N'}neaktivní{elseif $row.status == 'W'}čekající na ověření{/if}</td>
+				<td>{if $row.status == 'Y'}active{elseif $row.status == 'N'}inactive{elseif $row.status == 'W'}waiting approval{/if}</td>
 				<td>{$row.inserted|date_format:"%d.%m.%Y %H:%M"}</td>
 				<td>
-					<a href="{$ROOT}admin/administrator-detail?id={$row.user_id}" class="btn btn-primary btn-xs">Upravit</a>
+					<a href="{$ROOT}admin/administrator-detail?id={$row.user_id}" class="btn btn-primary btn-xs">Edit</a>
 	{if $row.user_id != $USER_ID && false}
-					<a href="javascript:;" data-href="{$ROOT}admin/administrator?delete={$row.user_id}" class="btn btn-danger btn-xs delete" data-toggle="modal" data-target="#deleteItemModal">Smazat</a>
+					<a href="javascript:;" data-href="{$ROOT}admin/administrator?delete={$row.user_id}" class="btn btn-danger btn-xs delete" data-toggle="modal" data-target="#deleteItemModal">Delete</a>
 	{/if}
 				</td>
 			</tr>
@@ -65,14 +65,14 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="deleteItemLabel">Smazat položku</h4>
+				<h4 class="modal-title" id="deleteItemLabel">Delete record</h4>
 			</div>
 			<div class="modal-body">
-				<p>Opravdu chcete smazat položku?</p>
+				<p>Do you realy want to delete this record?</p>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Zrušit</button>
-				<a href="" class="btn btn-primary">Potvrdit</a>
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+				<a href="" class="btn btn-primary">Confirm</a>
 			</div>
 		</div>
 	</div>
