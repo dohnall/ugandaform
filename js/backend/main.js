@@ -23,8 +23,8 @@
 		firstDay: 1,
 		changeMonth: true,
 		changeYear: true,
-		yearRange: "1000:c",
-	    option: $.datepicker.regional['cz']
+		//yearRange: "1000:c"
+	    //option: $.datepicker.regional['cz']
 	});
 	$(".datepicker-nofuture").datepicker({
 		dateFormat: "yy-mm-dd",
@@ -32,9 +32,14 @@
 		maxDate: 'today',
 		changeMonth: true,
 		changeYear: true,
-		yearRange: "1000:c",
-	    option: $.datepicker.regional['cz']
+		//yearRange: "1000:c"
+	    //option: $.datepicker.regional['cz']
 	});
+
+    $('.form-group select').selectize({
+        create: true,
+        sortField: 'text'
+    });
 
 	$(document).on('keypress', '.filter input:text', function(e) {
 		if(e.which == 13) {

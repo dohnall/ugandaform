@@ -1,0 +1,75 @@
+<h1>USD ({$count})</h1>
+<p>
+	<a href="{$ROOT}admin/form2-detail" class="btn btn-default">New record</a>
+	{if $filter}
+	<a href="?nofilter" class="btn btn-danger">Cancel filter</a>
+	{/if}
+</p>
+{include file="pager.html"}
+<form method="post" action="">
+	<table class="table table-bordered table-hover table-striped">
+		<thead>
+		<tr>
+			<th>Date</th>
+			<th>Particulars</th>
+			<th>CF name</th>
+			<th>Shop</th>
+			<th>Division</th>
+			<th>Pay in</th>
+			<th>Pay out</th>
+			<th>Note</th>
+			<th>Balance</th>
+			<th>Action</th>
+		</tr>
+		<tr class="filter">
+			<th>
+				<input type="hidden" name="filter" value="1">
+				<input type="text" class="half datepicker-nofuture" placeholder="from" name="date_from" value="{$filter.date_from}">
+				<input type="text" class="half datepicker-nofuture" placeholder="to" name="date_to" value="{$filter.date_to}">
+			</th>
+			<th>
+				<select name="particulars">
+					<option value="0">All</option>
+					{foreach from=$TEXT.particulars item=v key=k}
+					<option value="{$k}"{if $filter.particulars == $k} selected="selected"{/if}>{$v}</option>
+					{/foreach}
+				</select>
+			</th>
+			<th></th>
+			<th>
+				<select name="shop">
+					<option value="0">All</option>
+					{foreach from=$TEXT.shop item=v key=k}
+					<option value="{$k}"{if $filter.shop == $k} selected="selected"{/if}>{$v}</option>
+					{/foreach}
+				</select>
+			</th>
+			<th></th>
+			<th><input type="text" placeholder="search" name="payin" value="{$filter.payin}"></th>
+			<th><input type="text" placeholder="search" name="payout" value="{$filter.payout}"></th>
+			<th><input type="text" placeholder="search" name="note" value="{$filter.note}"></th>
+			<th></th>
+			<th></th>
+		</tr>
+		</thead>
+		<tbody>
+		{foreach from=$items item=row}
+		<tr>
+			<td>{$row.date|date_format:"%d.%m.%Y"}</td>
+			<td>{$TEXT.particulars[$row.particulars]}</td>
+			<td>{$TEXT.cf_name[$row.cf_name]}</td>
+			<td>{$TEXT.shop[$row.shop]}</td>
+			<td>{$TEXT.division[$row.division]}</td>
+			<td>{$row.payin}</td>
+			<td>{$row.payout}</td>
+			<td>{$row.note}</td>
+			<td>{$row.balance}</td>
+			<td>
+				<a href="{$ROOT}admin/form2-detail?id={$row.id}" class="btn btn-primary btn-xs">Edit</a>
+			</td>
+		</tr>
+		{/foreach}
+		</tbody>
+	</table>
+</form>
+{include file="pager.html"}

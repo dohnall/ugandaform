@@ -19,7 +19,8 @@
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <link href="{$DESIGN}ie10-viewport-bug-workaround.css" rel="stylesheet">
 	<link href="{$DESIGN}jquery-ui.min.css" rel="stylesheet">
-    <!-- Custom styles for this template -->
+	  <link href="{$DESIGN}selectize.bootstrap3.css" rel="stylesheet">
+	  <!-- Custom styles for this template -->
     <link href="{$DESIGN}main.css?{$timestamp}" rel="stylesheet">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -29,6 +30,7 @@
     <script src="{$JS}jquery-ui.min.js"></script>
     <script src="{$JS}jquery.ui.datepicker-cz.js"></script>
 	<script src="{$JS}jquery.fixedtableheader.min.js"></script>
+	  <script src="{$JS}selectize.min.js"></script>
 	<script src="{$JS}main.js?{$timestamp}"></script>
     <script src="{$JS}ie10-viewport-bug-workaround.js"></script>
 	<script src="{$JS}tinymce/tinymce.min.js"></script>
@@ -58,7 +60,7 @@
 			<div id="navbar" class="navbar-collapse collapse">
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="{$ROOT}admin">Dashboard</a></li>
-					<li><a href="{$ROOT}admin/{if $USER.admin == 'Y'}administrator{else}user{/if}-detail?id={$USER.user_id}">Profile</a></li>
+					{*<li><a href="{$ROOT}admin/{if $USER.admin == 'Y'}administrator{else}user{/if}-detail?id={$USER.user_id}">Profile</a></li>*}
 					<li><a href="{$ROOT}admin/logout">Logout ({$USER.username})</a></li>
 				</ul>
 			</div>
@@ -91,9 +93,9 @@
 						<div id="menu2" class="panel-collapse collapse{if in_array($PAGE, array('form1', 'form1-detail', 'form2', 'form2-detail', 'form3', 'form3-detail'))} in{/if}" role="tabpanel" aria-labelledby="heading2">
 							<div class="panel-body">
 								<ul class="nav nav-sidebar">
-									<li{if in_array($PAGE, array('form1', 'form1-detail'))} class="active"{/if}><a href="{$ROOT}admin/form1">Form 1</a></li>
-									<li{if in_array($PAGE, array('form2', 'form2-detail'))} class="active"{/if}><a href="{$ROOT}admin/form2">Form 2</a></li>
-									<li{if in_array($PAGE, array('form3', 'form3-detail'))} class="active"{/if}><a href="{$ROOT}admin/form3">Form 3</a></li>
+									<li{if in_array($PAGE, array('form1', 'form1-detail'))} class="active"{/if}><a href="{$ROOT}admin/form1">UGX</a></li>
+									<li{if in_array($PAGE, array('form2', 'form2-detail'))} class="active"{/if}><a href="{$ROOT}admin/form2">USD</a></li>
+									<li{if in_array($PAGE, array('form3', 'form3-detail'))} class="active"{/if}><a href="{$ROOT}admin/form3">Daily data</a></li>
 								</ul>
 							</div>
 						</div>

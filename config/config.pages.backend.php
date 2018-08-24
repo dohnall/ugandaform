@@ -7,25 +7,55 @@ $PAGES = array(
 			'keywords' => '',
 		),
 		'dashboard' => array(
-			'title' => 'Úvod - Uganda',
+			'title' => 'Dashboard - Uganda',
 			'description' => '',
 			'keywords' => '',
 		),
 		'profile' => array(
-			'title' => 'Profil - Uganda',
+			'title' => 'Profile - Uganda',
 			'description' => '',
 			'keywords' => '',
 		),
 		'administrator' => array(
-			'title' => 'Administrátoři - Uganda',
+			'title' => 'Administrators - Uganda',
 			'description' => '',
 			'keywords' => '',
 		),
 		'administrator-detail' => array(
-			'title' => 'Podrobnosti administrátora - Uganda',
+			'title' => 'Administrator details - Uganda',
 			'description' => '',
 			'keywords' => '',
 		),
+        'form1' => array(
+            'title' => 'UGX - Uganda',
+            'description' => '',
+            'keywords' => '',
+        ),
+        'form1-detail' => array(
+            'title' => 'UGX details - Uganda',
+            'description' => '',
+            'keywords' => '',
+        ),
+        'form2' => array(
+            'title' => 'USD - Uganda',
+            'description' => '',
+            'keywords' => '',
+        ),
+        'form2-detail' => array(
+            'title' => 'USD details - Uganda',
+            'description' => '',
+            'keywords' => '',
+        ),
+        'form3' => array(
+            'title' => 'Daily data - Uganda',
+            'description' => '',
+            'keywords' => '',
+        ),
+        'form3-detail' => array(
+            'title' => 'Daily data details - Uganda',
+            'description' => '',
+            'keywords' => '',
+        ),
 
 	),
 );
