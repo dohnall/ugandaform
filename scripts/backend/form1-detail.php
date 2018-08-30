@@ -13,7 +13,13 @@ if($form_id) {
 	$new = true;
 }
 
-if(isset($_POST['save'])) {
+if(isset($_POST['save']) || isset($_POST['savenew'])) {
+	if(!$_POST['particulars'] || !$_POST['shop'] || !preg_match('/^[0-9]{4}\-[0-9]{2}\-[0-9]{2}$/', $_POST['date'])) {
+		$session->alert = 'Please, fill all mandatory fields!';
+		$session->alert_type = 'danger';
+		$session->data = $_POST;
+		Common::redirect();
+	}
 	//d($_FILES);
 	if($new == true) {
 		//insert
@@ -21,9 +27,7 @@ if(isset($_POST['save'])) {
 		    'user_id' => $session->user_id,
 			'date' => $_POST['date'],
 			'particulars' => is_numeric($_POST['particulars']) ? $_POST['particulars'] : 0,
-            'cf_name' => is_numeric($_POST['particulars']) ? $_POST['particulars'] : 0,
 			'shop' => is_numeric($_POST['shop']) ? $_POST['shop'] : 0,
-            'division' => is_numeric($_POST['shop']) ? $_POST['shop'] : 0,
 			'payin' => is_numeric($_POST['payin']) ? $_POST['payin'] : 0,
 			'payout' => is_numeric($_POST['payout']) ? $_POST['payout'] : 0,
 			'note' => $_POST['note'],
@@ -38,9 +42,7 @@ if(isset($_POST['save'])) {
         $oldvalues = [
             'date' => (String)$data->date,
             'particulars' => $data->particulars,
-            'cf_name' => $data->particulars,
             'shop' => $data->shop,
-            'division' => $data->shop,
             'payin' => $data->payin,
             'payout' => $data->payout,
             'note' => $data->note,
@@ -49,9 +51,7 @@ if(isset($_POST['save'])) {
 		$values = [
             'date' => $_POST['date'],
             'particulars' => is_numeric($_POST['particulars']) ? $_POST['particulars'] : 0,
-            'cf_name' => is_numeric($_POST['particulars']) ? $_POST['particulars'] : 0,
             'shop' => is_numeric($_POST['shop']) ? $_POST['shop'] : 0,
-            'division' => is_numeric($_POST['shop']) ? $_POST['shop'] : 0,
             'payin' => is_numeric($_POST['payin']) ? $_POST['payin'] : 0,
             'payout' => is_numeric($_POST['payout']) ? $_POST['payout'] : 0,
             'note' => $_POST['note'],
@@ -75,7 +75,12 @@ if(isset($_POST['save'])) {
 	}
 
 	$session->alert = 'Record was saved!';
-	Common::redirect(ROOT.'admin/form1');
+
+	if(isset($_POST['savenew'])) {
+		Common::redirect(ROOT.'admin/form1-detail');
+	} else {
+		Common::redirect(ROOT.'admin/form1');
+	}
 }
 
 $data = isset($session->data) ? $session->data : $data;

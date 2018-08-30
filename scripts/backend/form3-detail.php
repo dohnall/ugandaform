@@ -3,10 +3,10 @@ $form_id = isset($_GET['id']) && is_numeric($_GET['id']) ? $_GET['id'] : 0;
 $data = array();
 
 if($form_id) {
-	$query = "SELECT * FROM ".DBPREF."currency_balance WHERE currency = 'USD' AND id = ".$form_id;
+	$query = "SELECT * FROM ".DBPREF."daily_data WHERE id = ".$form_id;
 	$data = dibi::query($query)->fetch();
 	if(!$data) {
-		Common::redirect(ROOT.'admin/form1-detail');
+		Common::redirect(ROOT.'admin/form3-detail');
 	}
 	$new = false;
 } else {
@@ -14,7 +14,7 @@ if($form_id) {
 }
 
 if(isset($_POST['save']) || isset($_POST['savenew'])) {
-	if(!$_POST['particulars'] || !$_POST['shop'] || !preg_match('/^[0-9]{4}\-[0-9]{2}\-[0-9]{2}$/', $_POST['date'])) {
+	if(!$_POST['game'] || !$_POST['shop'] || !preg_match('/^[0-9]{4}\-[0-9]{2}\-[0-9]{2}$/', $_POST['date'])) {
 		$session->alert = 'Please, fill all mandatory fields!';
 		$session->alert_type = 'danger';
 		$session->data = $_POST;
@@ -26,45 +26,44 @@ if(isset($_POST['save']) || isset($_POST['savenew'])) {
 		$values = [
 		    'user_id' => $session->user_id,
 			'date' => $_POST['date'],
-			'particulars' => is_numeric($_POST['particulars']) ? $_POST['particulars'] : 0,
+			'game' => is_numeric($_POST['game']) ? $_POST['game'] : 0,
 			'shop' => is_numeric($_POST['shop']) ? $_POST['shop'] : 0,
-			'payin' => is_numeric($_POST['payin']) ? $_POST['payin'] : 0,
+            'tickets' => is_numeric($_POST['tickets']) ? $_POST['tickets'] : 0,
+            'payin' => is_numeric($_POST['payin']) ? $_POST['payin'] : 0,
 			'payout' => is_numeric($_POST['payout']) ? $_POST['payout'] : 0,
-			'note' => $_POST['note'],
-            'currency' => 'USD',
 			'inserted%sql' => 'NOW()',
 		];
 		//d($values);
-		dibi::insert(DBPREF."currency_balance", $values)->execute();
+		dibi::insert(DBPREF."daily_data", $values)->execute();
 		$form_id = dibi::getInsertId();
 	} else {
 		//update
         $oldvalues = [
             'date' => (String)$data->date,
-            'particulars' => $data->particulars,
+            'game' => $data->game,
             'shop' => $data->shop,
+            'tickets' => $data->tickets,
             'payin' => $data->payin,
             'payout' => $data->payout,
-            'note' => $data->note,
         ];
 
 		$values = [
             'date' => $_POST['date'],
-            'particulars' => is_numeric($_POST['particulars']) ? $_POST['particulars'] : 0,
+            'game' => is_numeric($_POST['game']) ? $_POST['game'] : 0,
             'shop' => is_numeric($_POST['shop']) ? $_POST['shop'] : 0,
+            'tickets' => is_numeric($_POST['tickets']) ? $_POST['tickets'] : 0,
             'payin' => is_numeric($_POST['payin']) ? $_POST['payin'] : 0,
             'payout' => is_numeric($_POST['payout']) ? $_POST['payout'] : 0,
-            'note' => $_POST['note'],
             'updated%sql' => 'NOW()',
 		];
 
-		dibi::update(DBPREF."currency_balance", $values)
+		dibi::update(DBPREF."daily_data", $values)
 		->where('id = %i', $form_id)
 		->execute();
 
 		unset($values['updated%sql']);
 		$logdata = [
-            'agenda' => 2,
+            'agenda' => 3,
             'form_id' => $form_id,
             'old_value' => serialize($oldvalues),
             'new_value' => serialize($values),
@@ -77,9 +76,9 @@ if(isset($_POST['save']) || isset($_POST['savenew'])) {
 	$session->alert = 'Record was saved!';
 
 	if(isset($_POST['savenew'])) {
-		Common::redirect(ROOT.'admin/form2-detail');
+		Common::redirect(ROOT.'admin/form3-detail');
 	} else {
-		Common::redirect(ROOT.'admin/form2');
+		Common::redirect(ROOT.'admin/form3');
 	}
 }
 

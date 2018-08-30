@@ -1,6 +1,7 @@
 <h1>UGX ({$count})</h1>
 <p>
-	<a href="{$ROOT}admin/form1-detail" class="btn btn-default">New record</a>
+	<a href="{$ROOT}admin/form1-detail" class="btn btn-primary">New record</a>
+    <a href="{$ROOT}admin/form1?export" class="btn btn-default">Export to excel</a>
 {if $filter}
 	<a href="?nofilter" class="btn btn-danger">Cancel filter</a>
 {/if}
@@ -18,7 +19,7 @@
 				<th>Pay in</th>
 				<th>Pay out</th>
 				<th>Note</th>
-				<th>Balance</th>
+				<th>Inserted</th>
 				<th>Action</th>
 			</tr>
 			<tr class="filter">
@@ -48,7 +49,10 @@
 				<th><input type="text" placeholder="search" name="payin" value="{$filter.payin}"></th>
 				<th><input type="text" placeholder="search" name="payout" value="{$filter.payout}"></th>
 				<th><input type="text" placeholder="search" name="note" value="{$filter.note}"></th>
-				<th></th>
+				<th>
+					<input type="text" class="half datepicker-nofuture" placeholder="from" name="inserted_from" value="{$filter.inserted_from}">
+					<input type="text" class="half datepicker-nofuture" placeholder="to" name="inserted_to" value="{$filter.inserted_to}">
+				</th>
 				<th></th>
 			</tr>	
 		</thead>
@@ -57,13 +61,13 @@
 			<tr>
 				<td>{$row.date|date_format:"%d.%m.%Y"}</td>
 				<td>{$TEXT.particulars[$row.particulars]}</td>
-				<td>{$TEXT.cf_name[$row.cf_name]}</td>
+				<td>{$TEXT.cf_name[$row.particulars]}</td>
 				<td>{$TEXT.shop[$row.shop]}</td>
-				<td>{$TEXT.division[$row.division]}</td>
+				<td>{$TEXT.division[$row.shop]}</td>
 				<td>{$row.payin}</td>
 				<td>{$row.payout}</td>
 				<td>{$row.note}</td>
-				<td>{$row.balance}</td>
+				<td>{$row.inserted|date_format:"%d.%m.%Y %H:%M:%S"}</td>
 				<td>
 					<a href="{$ROOT}admin/form1-detail?id={$row.id}" class="btn btn-primary btn-xs">Edit</a>
 				</td>
