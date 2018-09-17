@@ -85,17 +85,29 @@
 							</div>
 						</div>
 					</div>
+					<div class="panel panel-default">
+						<div class="panel-heading" role="tab" id="heading3">
+							<h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#accordion" href="#menu3" aria-expanded="false" aria-controls="menu3">Branches</a></h4>
+						</div>
+						<div id="menu3" class="panel-collapse collapse{if in_array($PAGE, array('branch', 'branch-detail'))} in{/if}" role="tabpanel" aria-labelledby="heading3">
+							<div class="panel-body">
+								<ul class="nav nav-sidebar">
+									<li{if in_array($PAGE, array('branch', 'branch-detail'))} class="active"{/if}><a href="{$ROOT}admin/branch">Branches</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
 {/if}
 					<div class="panel panel-default">
 						<div class="panel-heading" role="tab" id="heading2">
 							<h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#accordion" href="#menu2" aria-expanded="false" aria-controls="menu2">Forms</a></h4>
 						</div>
-						<div id="menu2" class="panel-collapse collapse{if in_array($PAGE, array('form1', 'form1-detail', 'form2', 'form2-detail', 'form3', 'form3-detail'))} in{/if}" role="tabpanel" aria-labelledby="heading2">
+						<div id="menu2" class="panel-collapse collapse{if in_array($PAGE, array('form1', 'form1-detail', 'form1-import', 'form2', 'form2-detail', 'form2-import', 'form3', 'form3-detail', 'form3-import'))} in{/if}" role="tabpanel" aria-labelledby="heading2">
 							<div class="panel-body">
 								<ul class="nav nav-sidebar">
-									<li{if in_array($PAGE, array('form1', 'form1-detail'))} class="active"{/if}><a href="{$ROOT}admin/form1">UGX</a></li>
-									<li{if in_array($PAGE, array('form2', 'form2-detail'))} class="active"{/if}><a href="{$ROOT}admin/form2">USD</a></li>
-									<li{if in_array($PAGE, array('form3', 'form3-detail'))} class="active"{/if}><a href="{$ROOT}admin/form3">Daily data</a></li>
+									<li{if in_array($PAGE, array('form1', 'form1-detail', 'form1-import'))} class="active"{/if}><a href="{$ROOT}admin/form1">UGX</a></li>
+									<li{if in_array($PAGE, array('form2', 'form2-detail', 'form2-import'))} class="active"{/if}><a href="{$ROOT}admin/form2">USD</a></li>
+									<li{if in_array($PAGE, array('form3', 'form3-detail', 'form3-import'))} class="active"{/if}><a href="{$ROOT}admin/form3">Daily data</a></li>
 								</ul>
 							</div>
 						</div>

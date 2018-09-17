@@ -84,7 +84,13 @@ if(isset($_POST['save']) || isset($_POST['savenew'])) {
 
 $data = isset($session->data) ? $session->data : $data;
 
+$query = "SELECT *
+		  FROM ".DBPREF."branch 
+		  ORDER BY name ASC";
+$branches = dibi::query($query)->fetchAssoc('branch_id');
+
 $smarty->assign(array(
 	'form_id' => $form_id,
 	'data' => $data,
+    'branches' => $branches,
 ));

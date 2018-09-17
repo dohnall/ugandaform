@@ -1,0 +1,73 @@
+<h1>Branches ({$count})</h1>
+<p>
+	<a href="{$ROOT}admin/branch-detail" class="btn btn-default">New record</a>
+{if $filter}
+	<a href="?nofilter" class="btn btn-danger">Cancel filter</a>
+{/if}
+</p>
+{include file="pager.html"}
+<form method="post" action="">
+	<table class="table table-bordered table-hover table-striped">
+		<thead>
+			<tr>
+				<th><a href="{$ROOT}admin/branch?order=b.name">Name{if $ORDER.order == 'b.name'} <span class="glyphicon glyphicon-sort-by-alphabet{if $ORDER.sort == 'DESC'}-alt{/if}"></span>{/if}</a></th>
+				<th><a href="{$ROOT}admin/branch?order=b.status">Status{if $ORDER.order == 'b.status'} <span class="glyphicon glyphicon-sort-by-alphabet{if $ORDER.sort == 'DESC'}-alt{/if}"></span>{/if}</a></th>
+				<th><a href="{$ROOT}admin/branch?order=b.inserted">Inserted{if $ORDER.order == 'b.inserted'} <span class="glyphicon glyphicon-sort-by-alphabet{if $ORDER.sort == 'DESC'}-alt{/if}"></span>{/if}</a></th>
+				<th>Akce</th>
+			</tr>
+			<tr class="filter">
+				<th>
+					<input type="hidden" name="filter" value="1">
+					<input type="text" placeholder="search" name="name" value="{$filter.name}">
+				</th>
+				<th>
+					<select name="status">
+						<option value="0">All</option>
+						<option value="Y"{if $filter.status == 'Y'} selected="selected"{/if}>Active only</option>
+						<option value="N"{if $filter.status == 'N'} selected="selected"{/if}>Inactive only</option>
+					</select>
+				</th>
+				<th>
+					<input type="text" class="half datepicker-nofuture" placeholder="from" name="inserted_from" value="{$filter.inserted_from}">
+					<input type="text" class="half datepicker-nofuture" placeholder="to" name="inserted_to" value="{$filter.inserted_to}">
+				</th>
+				<th>&nbsp;</th>
+			</tr>	
+		</thead>
+		<tbody>
+{foreach from=$branches item=row}
+			<tr>
+				<td>{$row.name}</td>
+				<td>{if $row.status == 'Y'}active{elseif $row.status == 'N'}inactive{/if}</td>
+				<td>{$row.inserted|date_format:"%d.%m.%Y %H:%M"}</td>
+				<td>
+					<a href="{$ROOT}admin/branch-detail?id={$row.branch_id}" class="btn btn-primary btn-xs">Edit</a>
+	{if false}
+					<a href="javascript:;" data-href="{$ROOT}admin/branch?delete={$row.branch_id}" class="btn btn-danger btn-xs delete" data-toggle="modal" data-target="#deleteItemModal">Delete</a>
+	{/if}
+				</td>
+			</tr>
+{/foreach}
+		</tbody>
+	</table>
+</form>
+{include file="pager.html"}
+<!-- Modal -->
+<div class="modal fade" id="deleteItemModal" tabindex="-1" role="dialog" aria-labelledby="deleteItemLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="deleteItemLabel">Delete record</h4>
+			</div>
+			<div class="modal-body">
+				<p>Do you realy want to delete this record?</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+				<a href="" class="btn btn-primary">Confirm</a>
+			</div>
+		</div>
+	</div>
+</div>
+

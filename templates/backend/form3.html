@@ -2,6 +2,7 @@
 <p>
 	<a href="{$ROOT}admin/form3-detail" class="btn btn-primary">New record</a>
 	<a href="{$ROOT}admin/form3?export" class="btn btn-default">Export to excel</a>
+	<a href="{$ROOT}admin/form3-import" class="btn btn-default">Import from excel</a>
 	{if $filter}
 	<a href="?nofilter" class="btn btn-danger">Cancel filter</a>
 	{/if}
@@ -39,8 +40,8 @@
 			<th>
 				<select name="shop">
 					<option value="0">All</option>
-					{foreach from=$TEXT.shop item=v key=k}
-					<option value="{$k}"{if $filter.shop == $k} selected="selected"{/if}>{$v}</option>
+					{foreach from=$branches item=v key=k}
+					<option value="{$k}"{if $filter.shop == $k} selected="selected"{/if}>{$v->name}</option>
 					{/foreach}
 				</select>
 			</th>
@@ -61,9 +62,9 @@
 		<tr>
 			<td>{$row.date|date_format:"%d.%m.%Y"}</td>
 			<td>{$TEXT.game[$row.game]}</td>
-			<td>{$TEXT.shop[$row.shop]}</td>
-			<td>{$TEXT.division[$row.shop]}</td>
-			<td>{if $row.game == 6}{$TEXT.machines[$row.shop]}{else}-{/if}</td>
+			<td>{$row.branch}</td>
+			<td>{$TEXT.division[$row.division]}</td>
+			<td>{if $row.game == 6}{$row.machines}{else}-{/if}</td>
 			<td>{$row.tickets}</td>
 			<td>{$row.payin}</td>
 			<td>{$row.payout}</td>

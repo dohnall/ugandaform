@@ -26,6 +26,26 @@ $PAGES = array(
 			'description' => '',
 			'keywords' => '',
 		),
+        'user' => array(
+            'title' => 'Users - Uganda',
+            'description' => '',
+            'keywords' => '',
+        ),
+        'user-detail' => array(
+            'title' => 'User details - Uganda',
+            'description' => '',
+            'keywords' => '',
+        ),
+        'branch' => array(
+            'title' => 'Branches - Uganda',
+            'description' => '',
+            'keywords' => '',
+        ),
+        'branch-detail' => array(
+            'title' => 'Branch details - Uganda',
+            'description' => '',
+            'keywords' => '',
+        ),
         'form1' => array(
             'title' => 'UGX - Uganda',
             'description' => '',
@@ -33,6 +53,11 @@ $PAGES = array(
         ),
         'form1-detail' => array(
             'title' => 'UGX details - Uganda',
+            'description' => '',
+            'keywords' => '',
+        ),
+        'form1-import' => array(
+            'title' => 'Import UGX from Excel - Uganda',
             'description' => '',
             'keywords' => '',
         ),
@@ -46,6 +71,11 @@ $PAGES = array(
             'description' => '',
             'keywords' => '',
         ),
+        'form2-import' => array(
+            'title' => 'Import USD from Excel - Uganda',
+            'description' => '',
+            'keywords' => '',
+        ),
         'form3' => array(
             'title' => 'Daily data - Uganda',
             'description' => '',
@@ -53,6 +83,11 @@ $PAGES = array(
         ),
         'form3-detail' => array(
             'title' => 'Daily data details - Uganda',
+            'description' => '',
+            'keywords' => '',
+        ),
+        'form3-import' => array(
+            'title' => 'Import Daily data from Excel - Uganda',
             'description' => '',
             'keywords' => '',
         ),

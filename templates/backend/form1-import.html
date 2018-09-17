@@ -1,0 +1,24 @@
+<h1>Import UGX from Excel</h1>
+<form class="form-horizontal" method="post" action="" enctype="multipart/form-data">
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="file">Excel file <span class="required-star">*</span></label>
+		<div class="col-sm-10">
+			<input type="file" name="file" id="file">
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-offset-2 col-sm-10">
+{if !$form_id}
+			<button type="submit" name="savenew" class="btn btn-primary">Save and next</button>
+{/if}
+			<button type="submit" name="save" class="btn btn-primary">Save and back</button>
+			<a href="{$ROOT}admin/form1" class="btn btn-default">Back without save</a>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-offset-2 col-sm-10">
+			<p><em>* mandatory fields</em></p>
+		</div>
+	</div>
+</form>
+

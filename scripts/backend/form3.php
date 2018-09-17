@@ -70,8 +70,9 @@ if(isset($_GET['export'])) {
 
     $sheet = $objPHPExcel->setActiveSheetIndex(0);
 
-    $query = "SELECT cb1.*
+    $query = "SELECT cb1.*, b.name AS branch, b.division, b.machines
 		  FROM ".DBPREF."daily_data cb1
+		  LEFT JOIN ".DBPREF."branch b ON (cb1.shop = b.branch_id)
 		  WHERE ".implode(' AND ', $where)."
 		  ORDER BY cb1.date ASC, cb1.id ASC";
     $items = dibi::query($query)->fetchAssoc('id');
@@ -86,9 +87,9 @@ if(isset($_GET['export'])) {
         $sheet->setCellValue('D'.$i, date('n', strtotime($row['date'])));
         $sheet->setCellValue('E'.$i, date('Y', strtotime($row['date'])));
         $sheet->setCellValue('F'.$i, $TEXT[LANG]['game'][$row['game']]);
-        $sheet->setCellValue('G'.$i, $TEXT[LANG]['shop'][$row['shop']]);
-        $sheet->setCellValue('H'.$i, $TEXT[LANG]['division'][$row['shop']]);
-        $sheet->setCellValue('I'.$i, $row['game'] == 6 ? $TEXT[LANG]['machines'][$row['shop']] : '');
+        $sheet->setCellValue('G'.$i, $row['branch']);
+        $sheet->setCellValue('H'.$i, isset($TEXT[LANG]['division'][$row['division']]) ? $TEXT[LANG]['division'][$row['division']] : '');
+        $sheet->setCellValue('I'.$i, $row['game'] == 6 ? $row['machines'] : '');
         $sheet->setCellValue('J'.$i, $row['tickets']);
         $sheet->setCellValue('K'.$i, $row['payin']);
         $sheet->setCellValue('L'.$i, $row['payout']);
@@ -123,16 +124,23 @@ $pagerObj = new Pager($cnt, $perpage, $page);
 $pagerObj->process();
 $pager = $pagerObj->getPager();
 
-$query = "SELECT cb1.*
+$query = "SELECT cb1.*, b.name AS branch, b.division, b.machines
 		  FROM ".DBPREF."daily_data cb1
+		  LEFT JOIN ".DBPREF."branch b ON (cb1.shop = b.branch_id)
 		  WHERE ".implode(' AND ', $where)."
 		  ORDER BY cb1.id DESC
 		  LIMIT ".$pager['from'].", ".$perpage;
 
 $items = dibi::query($query)->fetchAssoc('id');
 
+$query = "SELECT *
+		  FROM ".DBPREF."branch 
+		  ORDER BY name ASC";
+$branches = dibi::query($query)->fetchAssoc('branch_id');
+
 $smarty->assign(array(
     'items' => $items,
+    'branches' => $branches,
     'pager' => $pager,
     'count' => $cnt,
 ));

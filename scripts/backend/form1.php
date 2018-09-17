@@ -69,8 +69,9 @@ if(isset($_GET['export'])) {
 
     $sheet = $objPHPExcel->setActiveSheetIndex(0);
 
-    $query = "SELECT cb1.*, (SELECT SUM(cb2.payin) - SUM(cb2.payout) FROM ".DBPREF."currency_balance cb2 WHERE cb2.currency = 'UGX' AND ((cb2.date < cb1.date) OR (cb2.date = cb1.date AND cb2.id <= cb1.id))) AS balance
+    $query = "SELECT cb1.*, b.name AS branch, b.division, b.machines, (SELECT SUM(cb2.payin) - SUM(cb2.payout) FROM ".DBPREF."currency_balance cb2 WHERE cb2.currency = 'UGX' AND ((cb2.date < cb1.date) OR (cb2.date = cb1.date AND cb2.id <= cb1.id))) AS balance
 		  FROM ".DBPREF."currency_balance cb1
+		  LEFT JOIN ".DBPREF."branch b ON (cb1.shop = b.branch_id)
 		  WHERE ".implode(' AND ', $where)."
 		  ORDER BY cb1.date ASC, cb1.id ASC";
     $items = dibi::query($query)->fetchAssoc('id');
@@ -83,8 +84,8 @@ if(isset($_GET['export'])) {
         $sheet->setCellValue('C'.$i, date('j', strtotime($row['date'])));
         $sheet->setCellValue('D'.$i, $TEXT[LANG]['particulars'][$row['particulars']]);
         $sheet->setCellValue('E'.$i, $TEXT[LANG]['cf_name'][$row['particulars']]);
-        $sheet->setCellValue('F'.$i, $TEXT[LANG]['shop'][$row['shop']]);
-        $sheet->setCellValue('G'.$i, $TEXT[LANG]['division'][$row['shop']]);
+        $sheet->setCellValue('F'.$i, $row['branch']);
+        $sheet->setCellValue('G'.$i, $TEXT[LANG]['division'][$row['division']]);
         $sheet->setCellValue('H'.$i, $row['payin']);
         $sheet->setCellValue('I'.$i, $row['payout']);
         $sheet->setCellValue('J'.$i, $row['note']);
@@ -126,15 +127,22 @@ $query = "SELECT cb1.*, (SELECT SUM(cb2.payin) - SUM(cb2.payout) FROM ".DBPREF."
 		  ORDER BY cb1.date ASC, cb1.id ASC
 		  LIMIT ".$pager['from'].", ".$perpage;
 */
-$query = "SELECT cb1.*
+$query = "SELECT cb1.*, b.name AS branch, b.division, b.machines
 		  FROM ".DBPREF."currency_balance cb1
+		  LEFT JOIN ".DBPREF."branch b ON (cb1.shop = b.branch_id)
 		  WHERE ".implode(' AND ', $where)."
 		  ORDER BY cb1.id DESC
 		  LIMIT ".$pager['from'].", ".$perpage;
 $items = dibi::query($query)->fetchAssoc('id');
 
+$query = "SELECT *
+		  FROM ".DBPREF."branch 
+		  ORDER BY name ASC";
+$branches = dibi::query($query)->fetchAssoc('branch_id');
+
 $smarty->assign(array(
 	'items' => $items,
+    'branches' => $branches,
 	'pager' => $pager,
 	'count' => $cnt,
 ));

@@ -22,8 +22,8 @@
 		<div class="col-sm-10">
 			<select name="shop" id="shop" class="form-control" placeholder="Select...">
 				<option value="">Select...</option>
-				{foreach from=$TEXT.shop item=v key=k}
-				<option value="{$k}"{if $data.shop == $k} selected="selected"{/if}>{$v}</option>
+				{foreach from=$branches item=v key=k}
+				<option value="{$k}"{if $data.shop == $k} selected="selected"{/if}>{$v->name}</option>
 				{/foreach}
 			</select>
 		</div>

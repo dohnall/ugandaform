@@ -28,10 +28,6 @@ if($session->user_id) {
 	$user = new User($session->user_id);
 	$USER = $user->getData();
 
-	if($USER->admin != 'Y') {
-		Common::redirect(ROOT);
-	}
-
 	$smarty->assign(array(
 		'USER_ID' => $session->user_id,
 		'USER' => $USER,

@@ -2,6 +2,7 @@
 <p>
 	<a href="{$ROOT}admin/form1-detail" class="btn btn-primary">New record</a>
     <a href="{$ROOT}admin/form1?export" class="btn btn-default">Export to excel</a>
+	<a href="{$ROOT}admin/form1-import" class="btn btn-default">Import from excel</a>
 {if $filter}
 	<a href="?nofilter" class="btn btn-danger">Cancel filter</a>
 {/if}
@@ -40,8 +41,8 @@
 				<th>
 					<select name="shop">
 						<option value="0">All</option>
-						{foreach from=$TEXT.shop item=v key=k}
-						<option value="{$k}"{if $filter.shop == $k} selected="selected"{/if}>{$v}</option>
+						{foreach from=$branches item=v key=k}
+						<option value="{$k}"{if $filter.shop == $k} selected="selected"{/if}>{$v->name}</option>
 						{/foreach}
 					</select>
 				</th>
@@ -62,8 +63,8 @@
 				<td>{$row.date|date_format:"%d.%m.%Y"}</td>
 				<td>{$TEXT.particulars[$row.particulars]}</td>
 				<td>{$TEXT.cf_name[$row.particulars]}</td>
-				<td>{$TEXT.shop[$row.shop]}</td>
-				<td>{$TEXT.division[$row.shop]}</td>
+				<td>{$row.branch}</td>
+				<td>{$TEXT.division[$row.division]}</td>
 				<td>{$row.payin}</td>
 				<td>{$row.payout}</td>
 				<td>{$row.note}</td>

@@ -213,6 +213,7 @@ define('CLASSES', LOCAL.'classes'.DS);
 define('CONFIG', LOCAL.'config'.DS);
 define('LOG', LOCAL.'log'.DS);
 define('FILES', LOCAL.'files'.DS);
+define('IMPORT', LOCAL.'import'.DS);
 define('SCRIPTS', LOCAL.'scripts'.DS.$ENV.DS);
 define('TEMPLATES', LOCAL.'templates'.DS.$ENV.DS);
 define('TEMPLATES_C', LOCAL.'templates_c'.DS);
