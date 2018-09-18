@@ -84,6 +84,23 @@ if(isset($_POST['save']) || isset($_POST['savenew'])) {
             //d($values);
             dibi::insert(DBPREF . "daily_data", $values)->execute();
 
+            if($shop_id == 91) {
+                $payin = (String)$sheet->getCell('Y' . $i)->getValue();
+                $payout = (String)$sheet->getCell('Z' . $i)->getValue();
+                $values = [
+                    'user_id' => $session->user_id,
+                    'date' => $_POST['date'],
+                    'game' => 3,
+                    'shop' => is_numeric($shop_id) ? $shop_id : 0,
+                    'tickets' => 0,
+                    'payin' => $payin,
+                    'payout' => $payout,
+                    'inserted%sql' => 'NOW()',
+                ];
+                //d($values);
+                dibi::insert(DBPREF . "daily_data", $values)->execute();
+            }
+
             $i++;
         }
     //Other exports
@@ -99,10 +116,14 @@ if(isset($_POST['save']) || isset($_POST['savenew'])) {
 
         $i = 2;
         while ($sheet->getCell('A' . $i)->getValue()) {
-            $shop = (String)$sheet->getCell('B' . $i)->getValue();
+            $shop = (String)$sheet->getCell('A' . $i)->getValue();
             $tickets = (String)$sheet->getCell('E' . $i)->getValue();
             $payin = (String)$sheet->getCell('G' . $i)->getValue();
             $payout = (String)$sheet->getCell('H' . $i)->getValue();
+
+            if($shop == '999') {
+                continue;
+            }
 
             $query = "SELECT branch_id
                   FROM " . DBPREF . "host
