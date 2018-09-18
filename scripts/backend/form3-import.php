@@ -8,44 +8,125 @@ if(isset($_POST['save']) || isset($_POST['savenew'])) {
 		Common::redirect();
 	}
 	//d($_FILES);
-	$filename = IMPORT.$session->user_id.'-daily-data-import-'.date('Y-m-d-H-i-s').'.xls';
-	move_uploaded_file($_FILES['file']['tmp_name'], $filename);
+    //Apollo export
+	if($_FILES['file']['type'] == 'text/xml') {
+        $filename = IMPORT . $session->user_id . '-daily-data-import-' . date('Y-m-d-H-i-s') . '.xml';
+        move_uploaded_file($_FILES['file']['tmp_name'], $filename);
 
-    $inputFileType = PHPExcel_IOFactory::identify($filename);
-    $objReader = PHPExcel_IOFactory::createReader($inputFileType);
-    $objPHPExcel = $objReader->load($filename);
+        $xml = simplexml_load_file($filename);
+        if(!$xml) {
+            exit('Failed to open import file.');
+        }
 
-	$sheet = $objPHPExcel->setActiveSheetIndex(0);
+        foreach($xml->terminal as $row) {
+            $shop = (String)$row->sn;
+            $payin = (int)$row->vlt_in;
+            $payout = (int)$row->vlt_out;
 
-	$i = 2;
-	while($sheet->getCell('A'.$i)->getValue()) {
-        $shop = (String)$sheet->getCell('B'.$i)->getValue();
-	    $tickets = (String)$sheet->getCell('E'.$i)->getValue();
-		$payin = (String)$sheet->getCell('G'.$i)->getValue();
-		$payout = (String)$sheet->getCell('H'.$i)->getValue();
-
-        $query = "SELECT branch_id
-                  FROM ".DBPREF."host
+            if(!$payin && !$payout) {
+                continue;
+            }
+//d($shop, $payin, $payout);
+            $query = "SELECT branch_id
+                  FROM " . DBPREF . "host
                   WHERE name = %s";
-        $shop_id = dibi::query($query, $shop)->fetchSingle();
+            $shop_id = dibi::query($query, $shop)->fetchSingle();
 
-		$values = [
-		    'user_id' => $session->user_id,
-			'date' => $_POST['date'],
-			'game' => is_numeric($_POST['game']) ? $_POST['game'] : 0,
-			'shop' => is_numeric($shop_id) ? $shop_id : 0,
-            'tickets' => $tickets,
-            'payin' => $payin,
-			'payout' => $payout,
-			'inserted%sql' => 'NOW()',
-		];
-		//d($values);
-		dibi::insert(DBPREF."daily_data", $values)->execute();
+            $values = [
+                'user_id' => $session->user_id,
+                'date' => $_POST['date'],
+                'game' => is_numeric($_POST['game']) ? $_POST['game'] : 0,
+                'shop' => is_numeric($shop_id) ? $shop_id : 0,
+                'tickets' => 0,
+                'payin' => (int)$payin,
+                'payout' => (int)$payout,
+                'inserted%sql' => 'NOW()',
+            ];
+            //d($values);
+            dibi::insert(DBPREF . "daily_data", $values)->execute();
+        }
+    //BUMP bets export
+    } elseif(is_numeric($_POST['game']) && $_POST['game'] == 1) {
+        $filename = IMPORT . $session->user_id . '-daily-data-import-' . date('Y-m-d-H-i-s') . '.xlsx';
+        move_uploaded_file($_FILES['file']['tmp_name'], $filename);
 
-		$i++;
-	}
+        $inputFileType = PHPExcel_IOFactory::identify($filename);
+        $objReader = PHPExcel_IOFactory::createReader($inputFileType);
+        $objPHPExcel = $objReader->load($filename);
 
-	$session->alert = 'Excel file was imported!';
+        $sheet = $objPHPExcel->setActiveSheetIndex(0);
+
+        $i = 3;
+        while ($sheet->getCell('A' . $i)->getValue()) {
+            $shop = (String)$sheet->getCell('A' . $i)->getValue();
+            $tickets1 = (String)$sheet->getCell('F' . $i)->getValue();
+            $tickets2 = (String)$sheet->getCell('H' . $i)->getValue();
+            $payin1 = (String)$sheet->getCell('E' . $i)->getValue();
+            $payin2 = (String)$sheet->getCell('G' . $i)->getValue();
+            $payout1 = (String)$sheet->getCell('I' . $i)->getValue();
+            $payout2 = (String)$sheet->getCell('K' . $i)->getValue();
+
+            $query = "SELECT branch_id
+                  FROM " . DBPREF . "host
+                  WHERE name = %s";
+            $shop_id = dibi::query($query, $shop)->fetchSingle();
+
+            $values = [
+                'user_id' => $session->user_id,
+                'date' => $_POST['date'],
+                'game' => is_numeric($_POST['game']) ? $_POST['game'] : 0,
+                'shop' => is_numeric($shop_id) ? $shop_id : 0,
+                'tickets' => $tickets1 - $tickets2,
+                'payin' => $payin1 - $payin2,
+                'payout' => $payout1 + $payout2,
+                'inserted%sql' => 'NOW()',
+            ];
+            //d($values);
+            dibi::insert(DBPREF . "daily_data", $values)->execute();
+
+            $i++;
+        }
+    //Other exports
+    } else {
+        $filename = IMPORT . $session->user_id . '-daily-data-import-' . date('Y-m-d-H-i-s') . '.xls';
+        move_uploaded_file($_FILES['file']['tmp_name'], $filename);
+
+        $inputFileType = PHPExcel_IOFactory::identify($filename);
+        $objReader = PHPExcel_IOFactory::createReader($inputFileType);
+        $objPHPExcel = $objReader->load($filename);
+
+        $sheet = $objPHPExcel->setActiveSheetIndex(0);
+
+        $i = 2;
+        while ($sheet->getCell('A' . $i)->getValue()) {
+            $shop = (String)$sheet->getCell('B' . $i)->getValue();
+            $tickets = (String)$sheet->getCell('E' . $i)->getValue();
+            $payin = (String)$sheet->getCell('G' . $i)->getValue();
+            $payout = (String)$sheet->getCell('H' . $i)->getValue();
+
+            $query = "SELECT branch_id
+                  FROM " . DBPREF . "host
+                  WHERE name = %s";
+            $shop_id = dibi::query($query, $shop)->fetchSingle();
+
+            $values = [
+                'user_id' => $session->user_id,
+                'date' => $_POST['date'],
+                'game' => is_numeric($_POST['game']) ? $_POST['game'] : 0,
+                'shop' => is_numeric($shop_id) ? $shop_id : 0,
+                'tickets' => $tickets,
+                'payin' => $payin,
+                'payout' => $payout,
+                'inserted%sql' => 'NOW()',
+            ];
+            //d($values);
+            dibi::insert(DBPREF . "daily_data", $values)->execute();
+
+            $i++;
+        }
+    }
+
+	$session->alert = 'File was imported!';
 
 	if(isset($_POST['savenew'])) {
 		Common::redirect(ROOT.'admin/form3-import');
